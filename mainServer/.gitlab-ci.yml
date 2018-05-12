@@ -1,0 +1,53 @@
+stages:
+  - test
+  - update_image
+  - deploy
+
+# install_and_test:
+#   stage: test
+#   image: mhart/alpine-node:6
+#   script:
+#     - npm install
+#     - npm test
+
+build_and_push_image_prod:
+ only:
+   - master
+ stage: update_image
+ image: docker:latest
+ services:
+ - docker:dind
+ script:
+   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+   - docker build -t registry.gitlab.com/todden-backend/new_activity .
+   - docker push registry.gitlab.com/todden-backend/new_activity
+
+
+build_and_push_image_staging:
+ only:
+   - staging
+ stage: update_image
+ image: docker:latest
+ services:
+ - docker:dind
+ script:
+   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+   - docker build -f ./Dockerfile.staging -t registry.gitlab.com/todden-backend/new_activity:staging .
+   - docker push registry.gitlab.com/todden-backend/new_activity:staging
+
+deploy_to_rancher_prod:
+  only:
+    - master
+  stage: deploy
+  image: cdrx/rancher-gitlab-deploy
+  script:
+    - upgrade --stack Backend --service newactivity --environment Todden-Production
+
+
+deploy_to_rancher_staging:
+  only:
+    - staging
+  stage: deploy
+  image: cdrx/rancher-gitlab-deploy
+  script:
+    - upgrade --stack Backend --service newactivity --environment Todden-Staging

@@ -1,0 +1,38 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./src/bin/www --exec babel-node",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && babel ./src --out-dir ./dist --copy-files --source-maps",
+    "dist": "node ./dist/bin/www",
+    "push-dev": "git push origin development:development",
+    "push-staging": "git push origin development:staging"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.1",
+    "axios": "^0.16.1",
+    "aws-sdk": "^2.188.0",
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "cors": "^2.7.1",
+    "debug": "~2.2.0",
+    "escape-string-regexp": "^1.0.5",
+    "express": "~4.13.1",
+    "express-jwt": "^3.4.0",
+    "jade": "~1.11.0",
+    "lodash.merge": "^4.6.0",
+    "morgan": "~1.6.1",
+    "request": "^2.79.0",
+    "serve-favicon": "~2.3.0",
+    "shortid": "^2.2.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "nodemon": "^1.12.1",
+    "rimraf": "^2.6.2",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}

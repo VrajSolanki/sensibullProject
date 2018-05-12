@@ -1,0 +1,26 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+  mainserver:
+    build: 
+      context: ./mainServer
+      dockerfile: Dockerfile.staging
+    ports:
+     - "3000:3000"
+    depends_on:
+      - "rabbitmq" 
+    restart: always
+
+  sendemail:
+    build: 
+      context: ./sendEmail
+      dockerfile: Dockerfile.staging
+    ports:
+     - "3001:3001"
+    depends_on:
+      - "rabbitmq"
+    restart: always  

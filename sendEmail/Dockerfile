@@ -1,0 +1,6 @@
+FROM node:9-alpine
+WORKDIR /src
+ADD . .
+RUN npm install && npm run build
+ENV NODE_ENV production
+CMD npm run dist
